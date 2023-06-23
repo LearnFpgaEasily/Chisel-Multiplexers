@@ -2,10 +2,10 @@ import chisel3._
 import chisel3.util._
 
 class MuxBundle extends Bundle{
-    val a = Input(Bits(1.W))
-    val b = Input(Bits(1.W))
-    val select = Input(Bits(1.W))
-    val out = Output(Bits(1.W))
+    val a = Input(Bool())
+    val b = Input(Bool())
+    val select = Input(Bool())
+    val out = Output(Bool())
 }
 
 class MuxExample extends Module{
