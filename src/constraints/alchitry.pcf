@@ -4,13 +4,15 @@ set_io io_mux_a C11
 set_io io_mux_b C12
 set_io io_mux_select H12
 set_io io_mux_out B14
-set_io io_muxcase_switch1 C5
+set_io io_muxcase_switch1 C6
 set_io io_muxcase_switch2 A5
-set_io io_muxcase_out[0] C10
-set_io io_muxcase_out[1] C9
-set_io io_muxlookup_index[0] G4
+set_io io_muxcase_switch3 C5
+set_io io_muxcase_out[0] A6
+set_io io_muxcase_out[1] A4
+set_io io_muxcase_out[2] A3
+set_io io_muxlookup_index[0] F3
 set_io io_muxlookup_index[1] H4
-set_io io_muxlookup_index[2] F3
+set_io io_muxlookup_index[2] G4
 #set_io io_muxlookup_index[3] F4
 #set_io io_muxlookup_index[4] E4
 #set_io io_muxlookup_index[5] D4
@@ -18,8 +20,8 @@ set_io io_muxlookup_index[2] F3
 #set_io io_muxlookup_index[7] D5
 set_io io_muxlookup_out[0] A2
 set_io io_muxlookup_out[1] A1
-set_io io_muxlookup_out[2] D3
-set_io io_muxlookup_out[3] C3
+set_io io_muxlookup_out[2] C3
+set_io io_muxlookup_out[3] D3
 set_io io_muxlookup_out[4] B1
 set_io io_muxlookup_out[5] C1
 set_io io_muxlookup_out[6] D1
@@ -28,4 +30,9 @@ set_io io_mux1H_switches[0] F12
 set_io io_mux1H_switches[1] G12
 set_io io_mux1H_out[0] G14
 set_io io_mux1H_out[1] F14
-
+set_io io_priorityMux_switch1 D10
+set_io io_priorityMux_switch2 D9
+set_io io_priorityMux_switch3 D7
+set_io io_priorityMux_out[0] C10
+set_io io_priorityMux_out[1] C9
+set_io io_priorityMux_out[2] A11

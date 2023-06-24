@@ -11,29 +11,38 @@ class MuxBundle extends Bundle{
 class MuxExample extends Module{
     val io = IO(new MuxBundle)
 
-    io.out := Mux(io.select.asBool, io.a, io.b)
+    // Butttons on Alchitry CU are active low
+    // => Equal 0 when pushed.
+    val select_bt_pushed = ~io.select
+
+    io.out := Mux(select_bt_pushed, io.a, io.b)
 }
 
 class MuxCaseBundle extends Bundle{
-    val switch1 = Input(Bits(1.W))
-    val switch2 = Input(Bits(1.W))
-    val out = Output(UInt(2.W))
+    val switch1 = Input(Bool())
+    val switch2 = Input(Bool())
+    val switch3 = Input(Bool())
+    val out     = Output(UInt(3.W))
 }
 class MuxCaseExample extends Module{
     val io = IO(new MuxCaseBundle)
 
-    val my_cases = Seq(io.switch1.asBool -> 1.U, io.switch2.asBool->2.U)
+    val my_cases = Seq(
+        io.switch1 -> 1.U,
+        io.switch2 -> 2.U,
+        io.switch3 -> 4.U
+    )
     io.out := MuxCase(0.U, my_cases)
 }
 
 class MuxLookUpBundle extends Bundle{
-    val index = Input(UInt(3.W))
+    val index = Input(Bits(3.W))
     val out   = Output(UInt(8.W))
 }
 class MuxLookupExample extends Module{
     val io = IO(new MuxLookUpBundle)
 
-    val my_cases = Seq.tabulate(8)(idx =>(idx.U -> (1.U<<idx)))
+    val my_cases = Seq.tabulate(8)(idx =>(idx.U -> (1.U << idx)))
     io.out := MuxLookup(io.index, 0.U(8.W), my_cases)
 }
 
@@ -50,14 +59,24 @@ class Mux1hExample extends Module{
     io.out := Mux1H(my_cases)
 }
 
+class PriorityMuxExample extends Module{
+    val io = IO(new MuxCaseBundle)
 
+    val my_cases = Seq(
+        io.switch1 -> 1.U,
+        io.switch2 -> 2.U,
+        io.switch3 -> 4.U
+    )
+    io.out := PriorityMux(my_cases)
+}
 
 class AlchitryCUTop extends Module {
-    val io_mux       = IO(new MuxBundle)
-    val io_muxcase   = IO(new MuxCaseBundle)
-    val io_muxlookup = IO(new MuxLookUpBundle)
-    val io_mux1H     = IO(new Mux1hBundle)
-    
+    val io_mux         = IO(new MuxBundle)
+    val io_muxcase     = IO(new MuxCaseBundle)
+    val io_muxlookup   = IO(new MuxLookUpBundle)
+    val io_mux1H       = IO(new Mux1hBundle)
+    val io_priorityMux = IO(new MuxCaseBundle)
+
     // the alchitry CU board has an active low reset
     val reset_n = !reset.asBool
 
@@ -66,11 +85,13 @@ class AlchitryCUTop extends Module {
         val my_muxcase     = Module(new MuxCaseExample)
         val my_muxlookup   = Module(new MuxLookupExample)
         val my_mux1h       = Module(new Mux1hExample)
+        val my_priorityMux = Module(new PriorityMuxExample)
 
-        io_mux       <> my_mux.io
-        io_muxcase   <> my_muxcase.io
-        io_muxlookup <> my_muxlookup.io
-        io_mux1H     <> my_mux1h.io
+        io_mux         <> my_mux.io
+        io_muxcase     <> my_muxcase.io
+        io_muxlookup   <> my_muxlookup.io
+        io_mux1H       <> my_mux1h.io
+        io_priorityMux <> my_priorityMux.io
     }
 }
 
